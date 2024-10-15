@@ -1,4 +1,4 @@
-def calculate_total_numbers() -> list:
+def get_numeric_data() -> list:
     with open('input.txt', 'r') as file:
         data_list = [lines.strip() for lines in file]
 
@@ -6,7 +6,7 @@ def calculate_total_numbers() -> list:
 
 
 def find_numbers_in_list():
-    list_for_analysis = calculate_total_numbers()
+    list_for_analysis = get_numeric_data()
     digits_list_by_line = []
     total_sum_of_digits = 0
 
