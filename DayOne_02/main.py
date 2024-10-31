@@ -4,52 +4,44 @@ import re
 def get_alphanumeric_data() -> list:
     with open('input.txt', 'r') as file:
         data_list = [lines.strip() for lines in file]
+        print(data_list)
     return data_list
 
 
 def find_words_in_data_list():
-    total_sum_of_digits = 0
-    digits_list_by_line = []
-    list_for_analysis = get_alphanumeric_data()
-    dict_ref = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9}
-    # line = tsgbzmgbonethreedrqzbhxjkvcnm3
-    #for line in list_for_analysis:
-    #    # decomposed_line = ["tsgbzmgbonethreedrqzbhxjkvcnm","3"]
-    #    decomposed_line = re.findall(r'\d+|[a-zA-Z]+', line)
-    #    for key in dict_ref.keys():
-    #        provisional_list = []
-    #        # data = tsgbzmgbonethreedrqzbhxjkvcnm
-    #        for data in decomposed_line:
-    #            if key in data:
-    #                provisional_list.append(key)
-    #                index = decomposed_line.index(data)
-    #                decomposed_line[index] = provisional_list
-    #
-    for line in list_for_analysis:
-            decomposed_line = re.findall(r'\d+|[a-zA-Z]+', line)
-            decomposed_line = [key if key in data else data for data in decomposed_line for key in dict_ref]
+    i = 0
+    sub_list = []
+    verification_list = []
+    total = 0
+    data = get_alphanumeric_data()
+    word_to_number = {
+        "one": "1",
+        "two": "2",
+        "three": "3",
+        "four": "4",
+        "five": "5",
+        "six": "6",
+        "seven": "7",
+        "eight": "8",
+        "nine": "9",
+    }
 
-    print(decomposed_line)
+    words_pattern = '|'.join(word_to_number.keys())
+    pattern = re.compile(r'(?=(' + words_pattern + r'|\d))')
 
+    for line in data:
+        i = i + 1
+        matches = pattern.findall(line)
+        converted_matches = [word_to_number.get(item, item) for item in matches]
+        sub_list.append(converted_matches)
 
+    for item in sub_list:
+        if len(item) < 2:
+            number = int(item[0] + item[0])
+        else:
+            number = int(item[0] + item[-1])
+        total = total + number
+        verification_list.append(number)
 
 
 find_words_in_data_list()
-#
-# for line in list_for_analysis:
-#    digits = [char for char in line if char.isdigit()]
-#    digits_list_by_line.append(digits)
-#
-# for digits_list in digits_list_by_line:
-#    if len(digits_list) == 1:
-#        digit = digits_list[0]
-#        number = int(digit + digit)
-#        total_sum_of_digits = total_sum_of_digits + number
-#
-#    else:
-#        first_digit = digits_list[0]
-#        last_digit = digits_list[-1]
-#        number = int(first_digit + last_digit)
-#        total_sum_of_digits = total_sum_of_digits + number
-#
-# print(total_sum_of_digits)
